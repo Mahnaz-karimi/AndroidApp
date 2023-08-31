@@ -3,6 +3,7 @@ package com.example.borgerapp;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +17,7 @@ public class MainActivity2 extends AppCompatActivity {
 
     Database_helper db;
     EditText id,name;
-    Button add, view;
+    Button add, view, logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,12 +28,20 @@ public class MainActivity2 extends AppCompatActivity {
         name = findViewById(R.id.name_txt);
 
         add= findViewById(R.id.button_add);
-        view= findViewById((R.id.button_view));
+        view= findViewById(R.id.button_view);
+        logout = findViewById(R.id.button_logout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity2.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
         db = new Database_helper(this);
 
         ADD();
         VIEW();
-
     }
     @Override
     protected void onDestroy() {
@@ -41,7 +50,6 @@ public class MainActivity2 extends AppCompatActivity {
     }
     private void ADD() {
         add.setOnClickListener( new View.OnClickListener(){
-
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity2.this);
@@ -49,11 +57,16 @@ public class MainActivity2 extends AppCompatActivity {
                         setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int which) {
-                                boolean isInserted = db.insertdata(id.getText().toString(), name.getText().toString());
-                                if (isInserted){
-                                    Toast.makeText(MainActivity2.this, "Data inserted", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(MainActivity2.this, "Data not inserted", Toast.LENGTH_SHORT).show();
+                                try {
+                                    boolean isInserted = db.insertdata(id.getText().toString(), name.getText().toString());
+                                    if (isInserted) {
+                                        Toast.makeText(MainActivity2.this, "Data inserted", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(MainActivity2.this, "Data not inserted", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(MainActivity2.this, "Error inserting data", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }).setNegativeButton("No", new DialogInterface.OnClickListener(){
@@ -65,7 +78,7 @@ public class MainActivity2 extends AppCompatActivity {
                             }
                         });
                 AlertDialog alertDialog = builder.create();
-                alertDialog.setTitle("conform");
+                alertDialog.setTitle("confirm");
                 alertDialog.show();
             }
         });
@@ -98,4 +111,6 @@ public class MainActivity2 extends AppCompatActivity {
         builder.setMessage(Message);
         builder.show();
     }
+
+
 }

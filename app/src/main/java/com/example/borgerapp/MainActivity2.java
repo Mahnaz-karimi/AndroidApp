@@ -48,7 +48,7 @@ public class MainActivity2 extends AppCompatActivity {
         super.onDestroy();
         db.close();
     }
-    private void ADD() {
+    public void ADD() {
         add.setOnClickListener( new View.OnClickListener(){
             @Override
             public void onClick(View view) {

@@ -10,11 +10,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.borgerapp.Database.Databaser_SignUp;
+import com.example.borgerapp.Database.Database_SignUp;
 
 public class Signup_Activity extends AppCompatActivity {
 
-    Databaser_SignUp db;
+    Database_SignUp db;
     EditText username, password, repassword;
     Button signup, signin;
 
@@ -23,7 +23,7 @@ public class Signup_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        db = new Databaser_SignUp(this);
+        db = new Database_SignUp(this);
 
         username = findViewById(R.id.username_txt);
         password = findViewById(R.id.password_txt);
@@ -51,7 +51,7 @@ public class Signup_Activity extends AppCompatActivity {
                     if (password.equals(repass)){
                         Boolean checkuser = db.checkUsername(user);
                         if (!checkuser){
-                            Boolean insert = db.insertdata(user, password);
+                            Boolean insert = db.insertData(user, password);
                             if(insert) {
                                 Toast.makeText(Signup_Activity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);

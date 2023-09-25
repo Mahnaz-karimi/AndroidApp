@@ -6,6 +6,10 @@ android {
     namespace 'com.example.borgerapp'
     compileSdk 33
 
+    packagingOptions {
+        exclude 'META-INF/LICENSE-notice.md' // Exclude the duplicate files
+        exclude 'META-INF/LICENSE.md'
+    }
     defaultConfig {
         applicationId "com.example.borgerapp"
         minSdk 30
@@ -15,7 +19,12 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    buildscript {
+        dependencies {
+            classpath 'com.android.tools.build:gradle:8.0.0'
 
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -26,15 +35,34 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+            returnDefaultValues = true
+            all {
+                useJUnitPlatform() // Add this line to use JUnit 5
+                adbOptions {
+                    timeOutInMs 600000 // 10 minutes
+                }
+            }
+        }
+    }
+
 }
 
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.mockito:mockito-core:4.0.0'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    implementation 'androidx.test:core:1.5.0'
+    testImplementation 'org.robolectric:robolectric:4.10.3'
+    testImplementation 'org.mockito:mockito-core:5.5.0'
+    androidTestImplementation 'org.mockito:mockito-android:5.5.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    testImplementation 'com.google.truth:truth:1.1.5'
+    androidTestImplementation 'com.google.truth:truth:1.1.5'
+    androidTestImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
 }

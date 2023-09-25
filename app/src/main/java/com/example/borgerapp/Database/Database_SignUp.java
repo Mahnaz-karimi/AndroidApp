@@ -8,14 +8,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-public class Databaser_SignUp extends SQLiteOpenHelper {
+public class Database_SignUp extends SQLiteOpenHelper {
     public static final String Database_Name= "Register.db";
     public static final String Table_Name= "Register_table";
     public static final String Column_1= "username";
     public static final String Column_2= "password";
-    public Databaser_SignUp(@Nullable Context context) {
+    public Database_SignUp(@Nullable Context context) {
         super(context, Database_Name, null, 1);
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + Table_Name + " (" + Column_1 + " TEXT PRIMARY KEY, " + Column_2 + " TEXT)");
@@ -26,7 +27,8 @@ public class Databaser_SignUp extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + Table_Name);
         onCreate(db);
     }
-    public boolean insertdata (String username, String password){
+
+    public boolean insertData (String username, String password){
         SQLiteDatabase db =this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -34,6 +36,7 @@ public class Databaser_SignUp extends SQLiteOpenHelper {
         contentValues.put(Column_2,password);
 
         long result =db.insert(Table_Name, null,contentValues);
+
         return result != -1;
     }
     public boolean checkUsername(String username) {
@@ -49,7 +52,7 @@ public class Databaser_SignUp extends SQLiteOpenHelper {
         }
     }
 
-    public boolean checkUsernamepassword(String username, String password) {
+    public boolean checkUsernamePassword(String username, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + Table_Name + " WHERE " + Column_1 + "=?" + " and " + Column_2 + "=?",  new String[] {username,password});
 

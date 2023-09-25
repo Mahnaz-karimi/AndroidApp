@@ -10,16 +10,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.borgerapp.Database.Databaser_SignUp;
+import com.example.borgerapp.Database.Database_SignUp;
 
 public class MainActivity extends AppCompatActivity {
-
     EditText username;
     EditText password;
     Button loginButtom, signupButton;
-
-    Button addButton;
-    Databaser_SignUp db;
+    Database_SignUp db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         loginButtom = findViewById((R.id.loginButton));
         signupButton = findViewById(R.id.signupButton);
 
-        db = new Databaser_SignUp(this);
+        db = new Database_SignUp(this);
 
 
         loginButtom.setOnClickListener(new View.OnClickListener() {
@@ -44,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(user) || TextUtils.isEmpty(pass))
                     Toast.makeText(MainActivity.this, "ALL fields Required", Toast.LENGTH_SHORT).show();
                 else {
-                    Boolean checkuserpass = db.checkUsernamepassword(user, pass);
+                    Boolean checkuserpass = db.checkUsernamePassword(user, pass);
                     if(checkuserpass){
                         Toast.makeText(MainActivity.this, "login Successfully", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this, MainActivity2.class);
